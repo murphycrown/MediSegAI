@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect, useRef } from "react";
+import { Activity, Mail, Lock, User as UserIcon, ArrowRight } from "lucide-react";
 
 // --- Particle Animation Component ---
 const ParticleBackground = () => {
@@ -166,57 +167,57 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [err,setError] = useState("");
+  const [err, setError] = useState("");
   const router = useRouter();
-   const handleSubmitLogin = async (e: React.FormEvent) => {
+  const handleSubmitLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    if(isRegister){
-  try {
-      const res = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email,password,name }),
-      });
+    if (isRegister) {
+      try {
+        const res = await fetch("/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, name }),
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (!res.ok) {
-        setError(data.message || "Invalid credentials");
-        console.log(data.message);
-        return;
+        if (!res.ok) {
+          setError(data.message || "Invalid credentials");
+          console.log(data.message);
+          return;
+        }
+
+        // Login success → for now just redirect
+        setIsRegister(false);
+      } catch (err) {
+        console.error(err);
+        setError("Server error");
       }
-
-      // Login success → for now just redirect
-      setIsRegister(false);
-    } catch (err) {
-      console.error(err);
-      setError("Server error");
     }
-    }
-    else{
-    try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+    else {
+      try {
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (!res.ok) {
-        setError(data.message || "Invalid credentials");
-        return;
+        if (!res.ok) {
+          setError(data.message || "Invalid credentials");
+          return;
+        }
+        //sillllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll
+        console.log(data)
+        // Login success → for now just redirect
+        router.push("/main");
+      } catch (err) {
+        console.error(err);
+        setError("Server error");
       }
-      //sillllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll
-     console.log(data)
-      // Login success → for now just redirect
-      router.push("/main");
-    } catch (err) {
-      console.error(err);
-      setError("Server error");
     }
-  }
   };
 
   const toggleMode = () => setIsRegister(!isRegister);
@@ -242,14 +243,10 @@ export default function Home() {
           <div className="p-8">
             {/* Logo and Header */}
             <div className="flex flex-col items-center mb-8">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-teal-400 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 mb-4 transition-transform hover:scale-105 active:scale-95 duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-                  <path d="M12 2v20M2 12h20" />
-                  <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10 10 10 0 0 1-10-10 10 10 0 0 1 10-10z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
+              <div className="w-16 h-16 bg-[#3b82f6] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 mb-4 transition-transform hover:scale-105 active:scale-95 duration-300">
+                <Activity size={32} className="text-white" />
               </div>
-              <h1 className="text-3xl font-bold text-white tracking-tight">Medi<span className="text-teal-400">AI</span></h1>
+              <h1 className="text-3xl font-bold text-white tracking-tight">MediSeg <span className="text-teal-400">AI</span></h1>
               <p className="text-slate-400 text-sm mt-1">{isRegister ? "Practitioner Onboarding" : "Clinical Access Portal"}</p>
             </div>
 

@@ -7,8 +7,8 @@ export function middleware(req: NextRequest) {
 
   // ⛔️ iron-session default cookie name
   const sessionCookie =
-    req.cookies.get("mediai_session") ||
-    req.cookies.get("mediai_session.sig");
+    req.cookies.get("medisegai_session") ||
+    req.cookies.get("medisegai_session.sig");
 
   const isLoggedIn = !!sessionCookie;
 

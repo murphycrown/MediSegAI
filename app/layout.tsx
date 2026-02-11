@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MediAI - Intelligent Healthcare",
+  title: "MediSeg AI - Intelligent Healthcare",
   description: "Professional AI-powered medical platform",
 };
 

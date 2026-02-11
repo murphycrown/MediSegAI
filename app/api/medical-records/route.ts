@@ -11,14 +11,14 @@ type SessionUser = {
 
 export async function POST(req: NextRequest) {
   try {
-   const session = await getIronSession<SessionData>(req, NextResponse.next(), sessionOptions);
+    const session = await getIronSession<SessionData>(req, NextResponse.next(), sessionOptions);
 
     if (!session.user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const body = await req.json();
-    const { type, systolic, diastolic, heartRate, analysis } = body;
+    const { type, systolic, diastolic, heartRate, analysis, sleepEfficiency, spo2, dailyActivity } = body;
 
     if (!type) {
       return NextResponse.json({ message: "Invalid data" }, { status: 400 });
@@ -32,6 +32,9 @@ export async function POST(req: NextRequest) {
       systolic,
       diastolic,
       heartRate,
+      sleepEfficiency,
+      spo2,
+      dailyActivity,
       analysis,
       createdAt: new Date(),
     };

@@ -12,7 +12,6 @@ export async function GET() {
 
     return NextResponse.json({
       message: "MongoDB connected successfully",
-      userCount: count,
     });
   } catch (error) {
     console.error("DB error:", error);

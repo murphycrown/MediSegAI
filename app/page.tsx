@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Brain, ChevronRight, Sparkles, Activity, Shield, Users, Mail, Globe, ArrowRight, Menu, X } from "lucide-react";
+import { Brain, ChevronRight, Sparkles, Activity, Shield, Users, Mail, Globe, ArrowRight, Menu, X, Clock, AlertTriangle, Wind } from "lucide-react";
 
 const ParticleBackground = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -103,6 +103,7 @@ export default function LandingPage() {
     const sections = [
         { id: "home", label: "Home" },
         { id: "about", label: "About Us" },
+        { id: "pricing", label: "Pricing" },
         { id: "contact", label: "Contact" }
     ];
 
@@ -118,18 +119,18 @@ export default function LandingPage() {
                 <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
                     <div className="flex items-center gap-2 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                         <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-teal-400 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform">
-                            <Brain size={22} className="text-white" />
+                            <Activity size={22} className="text-white" />
                         </div>
-                        <span className="text-xl font-bold tracking-tight text-white uppercase">Medi<span className="text-teal-400">AI</span></span>
+                        <span className="text-xl font-bold tracking-tight text-white uppercase">MediSeg <span className="text-teal-400">AI</span></span>
                     </div>
 
                     <nav className="hidden md:flex items-center gap-8">
                         {sections.map(s => (
-                            <a key={s.id} href={`#${s.id}`} className="text-sm font-medium text-slate-400 hover:text-white transition-colors">{s.label}</a>
+                            <a key={s.id} href={`#${s.id}`} className="text-base font-medium text-slate-400 hover:text-white transition-colors">{s.label}</a>
                         ))}
                         <button
                             onClick={() => router.push("/login")}
-                            className="px-6 py-2.5 bg-white text-black rounded-full text-sm font-bold hover:bg-slate-200 transition-all active:scale-95 shadow-xl shadow-white/10"
+                            className="px-6 py-3.5 bg-white text-black rounded-full text-base font-bold hover:bg-slate-200 transition-all active:scale-95 shadow-xl shadow-white/10"
                         >
                             Investor Portal
                         </button>
@@ -164,14 +165,14 @@ export default function LandingPage() {
                                 Intelligence that <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-300">Heals.</span>
                             </h1>
                             <p className="text-xl text-slate-400 leading-relaxed mb-10 max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-                                Medi AI is redefining clinical diagnostic infrastructure. We provide institutional-grade medical reasoning and predictive analysis to healthcare systems globally.
+                                MediSeg AI is redefining clinical diagnostic infrastructure. We provide institutional-grade medical reasoning and predictive analysis to healthcare systems globally.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-300">
-                                <button onClick={() => router.push("/login")} className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-bold transition-all flex items-center justify-center gap-2 group shadow-lg shadow-blue-600/20">
+                                <button onClick={() => router.push("/login")} className="px-10 py-5 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-bold transition-all flex items-center justify-center gap-2 group shadow-lg shadow-blue-600/20 text-lg">
                                     Get Started
-                                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                                 </button>
-                                <a href="#about" className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-full font-bold transition-all flex items-center justify-center">
+                                <a href="#about" className="px-10 py-5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-full font-bold transition-all flex items-center justify-center text-lg">
                                     Learn More
                                 </a>
                             </div>
@@ -190,7 +191,7 @@ export default function LandingPage() {
                             <div>
                                 <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight">Pioneering the Future of <span className="text-blue-400">Precision Medicine</span>.</h2>
                                 <p className="text-slate-400 text-lg leading-relaxed mb-8">
-                                    Founded with a mission to eliminate diagnostic errors, Medi AI combines advanced neural networks with rigorous clinical expertise. Our systems analyze millions of data points in milliseconds to assist clinicians in providing the highest standard of care.
+                                    Founded with a mission to eliminate diagnostic errors, MediSeg AI combines advanced neural networks with rigorous clinical expertise. Our systems analyze millions of data points in milliseconds to assist clinicians in providing the highest standard of care.
                                 </p>
                                 <div className="space-y-6">
                                     {[
@@ -239,6 +240,227 @@ export default function LandingPage() {
                     </div>
                 </section>
 
+                {/* Diagnostic Bottleneck Section */}
+                <section id="bottleneck" className="py-32 relative">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="text-center mb-20 max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-700">
+                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight">The Diagnostic Bottleneck</h2>
+                            <p className="text-slate-400 text-lg leading-relaxed">
+                                Manual segmentation is slow, prone to error, and unsustainable for modern radiology workflows.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {[
+                                {
+                                    icon: <Clock size={24} />,
+                                    title: "40 Mins Manual Work",
+                                    desc: "Radiologists spend valuable time manually tracing tumor boundaries slice-by-slice, reducing throughput."
+                                },
+                                {
+                                    icon: <Activity size={24} />,
+                                    title: "Diagnostic Delays",
+                                    desc: "Complex cases create backlogs. Patient anxiety increases as reports take days to finalize."
+                                },
+                                {
+                                    icon: <AlertTriangle size={24} />,
+                                    title: "Human Variability",
+                                    desc: "Fatigue leads to inconsistent measurements across follow-ups, affecting treatment decisions."
+                                }
+                            ].map((item, i) => (
+                                <div key={i} className="p-10 rounded-[40px] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-500 group animate-in fade-in slide-in-from-bottom-10 duration-700" style={{ animationDelay: `${i * 100}ms` }}>
+                                    <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-500 mb-8 group-hover:scale-110 transition-transform">
+                                        {item.icon}
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">{item.title}</h3>
+                                    <p className="text-slate-500 leading-relaxed text-sm">{item.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Clinical Validation Section */}
+                <section id="validation" className="py-32 relative bg-white/[0.01]">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="mb-20 animate-in fade-in slide-in-from-left-8 duration-700">
+                            <span className="text-xs font-black text-blue-500 uppercase tracking-[0.3em] mb-4 block">Clinical Validation</span>
+                            <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Proven in Critical Cases</h2>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {[
+                                {
+                                    icon: <Brain size={24} />,
+                                    title: "Glioblastoma Multiforme",
+                                    tag: "97% Dice Score",
+                                    desc: "Automated segmentation reduced planning time from 45 mins to 3 mins.",
+                                    color: "blue"
+                                },
+                                {
+                                    icon: <Wind size={24} />,
+                                    title: "Non-Small Cell Lung Cancer",
+                                    tag: "2mm Precision",
+                                    desc: "AI successfully mapped tumor proximity to the pulmonary artery, alerting surgeons to a critical safety margin.",
+                                    color: "teal"
+                                },
+                                {
+                                    icon: <Activity size={24} />,
+                                    title: "Metastatic Brain Lesions",
+                                    tag: "15% Tumor Reduction",
+                                    desc: "Volumetric tracking over 6 months clearly quantified treatment response automatically.",
+                                    color: "blue"
+                                }
+                            ].map((item, i) => (
+                                <div key={i} className="p-10 rounded-[40px] backdrop-blur-3xl bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all duration-500 group relative overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-700" style={{ animationDelay: `${(i + 3) * 100}ms` }}>
+                                    <div className="absolute top-6 right-6 text-slate-700 group-hover:text-blue-500 transition-colors">
+                                        <ArrowRight size={20} className="-rotate-45" />
+                                    </div>
+                                    <div className={`w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-8 group-hover:scale-110 transition-transform`}>
+                                        {item.icon}
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">{item.title}</h3>
+                                    <div className="inline-flex items-center px-4 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-widest mb-6">
+                                        {item.tag}
+                                    </div>
+                                    <p className="text-slate-500 leading-relaxed text-sm">{item.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Pricing Section */}
+                <section id="pricing" className="py-32 relative bg-[#050B14]">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="text-center mb-20">
+                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">Transparent Pricing</h2>
+                            <p className="text-slate-400 text-lg">Choose a plan that scales with your patient volume.</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                            {/* Standard */}
+                            <div className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-white/20 transition-all h-full flex flex-col">
+                                <h3 className="text-2xl font-bold text-white mb-2">Standard</h3>
+                                <p className="text-sm text-slate-400 mb-6">Essential AI tools for small clinics.</p>
+                                <div className="mb-8">
+                                    <span className="text-4xl font-bold text-white">$500</span>
+                                    <span className="text-slate-500">/mo</span>
+                                </div>
+                                <div className="space-y-4 mb-8 flex-1">
+                                    {["Up to 50 Scans/mo", "Basic Segmentation", "Email Support", "Standard Export"].map((feature, i) => (
+                                        <div key={i} className="flex items-center gap-3">
+                                            <div className="w-5 h-5 flex items-center justify-center text-blue-500">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4"><polyline points="20 6 9 17 4 12" /></svg>
+                                            </div>
+                                            <span className="text-slate-300 text-sm">{feature}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <button className="w-full py-4 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold transition-all text-base">
+                                    Contact Sales
+                                </button>
+                            </div>
+
+                            {/* Professional */}
+                            <div className="p-8 rounded-3xl bg-[#0B1221] border border-blue-500/30 relative transform md:-translate-y-4 shadow-2xl shadow-blue-900/20 h-full flex flex-col">
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-blue-600 rounded-full text-xs font-bold text-white uppercase tracking-wider">
+                                    Most Popular
+                                </div>
+                                <h3 className="text-2xl font-bold text-white mb-2">Professional</h3>
+                                <p className="text-sm text-slate-400 mb-6">High-volume processing for hospitals.</p>
+                                <div className="mb-8">
+                                    <span className="text-5xl font-bold text-white">$1,500</span>
+                                    <span className="text-slate-500">/mo</span>
+                                </div>
+                                <div className="space-y-4 mb-8 flex-1">
+                                    {["Up to 500 Scans/mo", "Advanced Volumetrics", "Priority Support", "PACS Integration", "Multi-user Access"].map((feature, i) => (
+                                        <div key={i} className="flex items-center gap-3">
+                                            <div className="w-5 h-5 flex items-center justify-center text-blue-500">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4"><polyline points="20 6 9 17 4 12" /></svg>
+                                            </div>
+                                            <span className="text-white text-sm">{feature}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <button className="w-full py-5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-600/25 text-base">
+                                    Get Started
+                                </button>
+                            </div>
+
+                            {/* Enterprise */}
+                            <div className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-white/20 transition-all h-full flex flex-col">
+                                <h3 className="text-2xl font-bold text-white mb-2">Enterprise</h3>
+                                <p className="text-sm text-slate-400 mb-6">Unlimited scale for health networks.</p>
+                                <div className="mb-8">
+                                    <span className="text-4xl font-bold text-white">Custom</span>
+                                </div>
+                                <div className="space-y-4 mb-8 flex-1">
+                                    {["Unlimited Scans", "Custom AI Models", "API Access", "On-premise Deployment", "Dedicated Success Manager"].map((feature, i) => (
+                                        <div key={i} className="flex items-center gap-3">
+                                            <div className="w-5 h-5 flex items-center justify-center text-blue-500">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4"><polyline points="20 6 9 17 4 12" /></svg>
+                                            </div>
+                                            <span className="text-slate-300 text-sm">{feature}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <button className="w-full py-4 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold transition-all text-base">
+                                    Contact Sales
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Our Vision Section */}
+                <section id="vision" className="py-32 relative bg-white/[0.01]">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                            <div className="space-y-12">
+                                <div>
+                                    <span className="text-sm font-black text-blue-500 uppercase tracking-[0.3em] mb-4 block">Our Vision</span>
+                                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight leading-[1.1]">
+                                        Democratizing Precision Diagnostics
+                                    </h2>
+                                    <p className="text-slate-400 text-lg leading-relaxed max-w-xl">
+                                        We believe that every patient deserves the most accurate diagnosis possible, regardless of where they are treated. By augmenting radiologists with AI, we bridge the gap between scan capability and human capacity.
+                                    </p>
+                                </div>
+
+                                <div className="space-y-8">
+                                    {[
+                                        { icon: <Globe size={20} />, text: "Deployed in 15+ Countries", color: "text-blue-400" },
+                                        { icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></svg>, text: "Improving Patient Outcomes", color: "text-rose-400" },
+                                        { icon: <Activity size={20} />, text: "Powered by Advanced Deep Learning", color: "text-amber-400" }
+                                    ].map((item, i) => (
+                                        <div key={i} className="flex items-center gap-6 group">
+                                            <div className={`w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center ${item.color} group-hover:scale-110 transition-transform duration-300`}>
+                                                {item.icon}
+                                            </div>
+                                            <span className="text-lg font-semibold text-slate-200">{item.text}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="relative">
+                                <div className="absolute inset-0 bg-blue-600/20 blur-[100px] rounded-full animate-pulse" />
+                                <div className="relative backdrop-blur-2xl bg-white/[0.03] border border-white/10 p-12 rounded-[40px] shadow-2xl space-y-8">
+                                    <h3 className="text-3xl font-bold text-white tracking-tight">Join Our Mission</h3>
+                                    <p className="text-slate-400 leading-relaxed text-lg">
+                                        We are a team of radiologists, data scientists, and engineers building the future of medical imaging.
+                                    </p>
+                                    <a href="#" className="flex items-center gap-2 text-blue-400 font-bold hover:text-blue-300 transition-colors group">
+                                        See Open Positions
+                                        <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 {/* Contact Section */}
                 <section id="contact" className="py-32 relative overflow-hidden">
                     <div className="max-w-7xl mx-auto px-6 text-center">
@@ -264,7 +486,7 @@ export default function LandingPage() {
                             <p className="text-blue-50 mb-10 max-w-xl mx-auto relative z-10 opacity-90 text-lg">
                                 Access our performance data, clinical validation studies, and upcoming Series B roadmap. Credentials required.
                             </p>
-                            <button onClick={() => router.push("/login")} className="px-10 py-4 bg-white text-blue-600 rounded-full font-bold text-lg hover:shadow-2xl transition-all active:scale-95 relative z-10">
+                            <button onClick={() => router.push("/login")} className="px-12 py-5 bg-white text-blue-600 rounded-full font-bold text-xl hover:shadow-2xl transition-all active:scale-95 relative z-10">
                                 Access Dashboard
                             </button>
                         </div>
@@ -276,15 +498,15 @@ export default function LandingPage() {
             <footer className="py-20 border-t border-white/5">
                 <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
                     <div className="flex items-center gap-2">
-                        <Brain size={24} className="text-blue-500" />
-                        <span className="text-lg font-bold text-white uppercase tracking-tighter">MediAI <span className="text-slate-500 font-normal">Corp.</span></span>
+                        <Activity size={24} className="text-blue-500" />
+                        <span className="text-lg font-bold text-white uppercase tracking-tighter">MediSeg AI <span className="text-slate-500 font-normal">Corp.</span></span>
                     </div>
                     <div className="flex gap-10 text-sm font-medium text-slate-500">
                         <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
                         <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
                         <a href="#" className="hover:text-white transition-colors">Ethics & AI</a>
                     </div>
-                    <p className="text-sm text-slate-600">© 2026 Medi AI Clinical Research. All rights reserved.</p>
+                    <p className="text-sm text-slate-600">© 2026 MediSeg AI Clinical Research. All rights reserved.</p>
                 </div>
             </footer>
         </div>
