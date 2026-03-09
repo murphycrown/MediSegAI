@@ -5,142 +5,146 @@ import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Sparkles, User, Send, Brain, ChevronRight, Loader2, Menu, X, ClipboardList, Plus, History, Activity } from "lucide-react";
-
+import  ParticleBackground  from "@/components/ParticleBackground";
+import { MessageBubble } from "@/components/MessageBubble";
+import Overview from "@/components/main/Overview";
+import StatCard from "@/components/StatCard";
+import AIasistant from "@/components/main/AIasistant";
 // --- Particle Animation Component (Reused from landing page for consistency) ---
-const ParticleBackground = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+// const ParticleBackground = () => {
+//     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
+//     useEffect(() => {
+//         const canvas = canvasRef.current;
+//         if (!canvas) return;
+//         const ctx = canvas.getContext("2d");
+//         if (!ctx) return;
 
-        let particles: Particle[] = [];
-        let animationFrameId: number;
-        let mouse = { x: -100, y: -100, radius: 150 };
+//         let particles: Particle[] = [];
+//         let animationFrameId: number;
+//         let mouse = { x: -100, y: -100, radius: 150 };
 
-        class Particle {
-            x: number;
-            y: number;
-            size: number;
-            baseX: number;
-            baseY: number;
-            density: number;
-            color: string;
+//         class Particle {
+//             x: number;
+//             y: number;
+//             size: number;
+//             baseX: number;
+//             baseY: number;
+//             density: number;
+//             color: string;
 
-            constructor(x: number, y: number) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 2 + 1;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 30) + 1;
-                const colors = ['#2dd4bf', '#3b82f6', '#ffffff'];
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-            }
+//             constructor(x: number, y: number) {
+//                 this.x = x;
+//                 this.y = y;
+//                 this.size = Math.random() * 2 + 1;
+//                 this.baseX = this.x;
+//                 this.baseY = this.y;
+//                 this.density = (Math.random() * 30) + 1;
+//                 const colors = ['#2dd4bf', '#3b82f6', '#ffffff'];
+//                 this.color = colors[Math.floor(Math.random() * colors.length)];
+//             }
 
-            draw() {
-                if (!ctx) return;
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-            }
+//             draw() {
+//                 if (!ctx) return;
+//                 ctx.fillStyle = this.color;
+//                 ctx.beginPath();
+//                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+//                 ctx.closePath();
+//                 ctx.fill();
+//             }
 
-            update() {
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                let forceDirectionX = dx / distance;
-                let forceDirectionY = dy / distance;
-                let maxDistance = mouse.radius;
-                let force = (maxDistance - distance) / maxDistance;
-                let directionX = forceDirectionX * force * this.density;
-                let directionY = forceDirectionY * force * this.density;
+//             update() {
+//                 let dx = mouse.x - this.x;
+//                 let dy = mouse.y - this.y;
+//                 let distance = Math.sqrt(dx * dx + dy * dy);
+//                 let forceDirectionX = dx / distance;
+//                 let forceDirectionY = dy / distance;
+//                 let maxDistance = mouse.radius;
+//                 let force = (maxDistance - distance) / maxDistance;
+//                 let directionX = forceDirectionX * force * this.density;
+//                 let directionY = forceDirectionY * force * this.density;
 
-                if (distance < mouse.radius) {
-                    this.x -= directionX;
-                    this.y -= directionY;
-                } else {
-                    if (this.x !== this.baseX) {
-                        let dxBase = this.x - this.baseX;
-                        this.x -= dxBase / 10;
-                    }
-                    if (this.y !== this.baseY) {
-                        let dyBase = this.y - this.baseY;
-                        this.y -= dyBase / 10;
-                    }
-                }
-            }
-        }
+//                 if (distance < mouse.radius) {
+//                     this.x -= directionX;
+//                     this.y -= directionY;
+//                 } else {
+//                     if (this.x !== this.baseX) {
+//                         let dxBase = this.x - this.baseX;
+//                         this.x -= dxBase / 10;
+//                     }
+//                     if (this.y !== this.baseY) {
+//                         let dyBase = this.y - this.baseY;
+//                         this.y -= dyBase / 10;
+//                     }
+//                 }
+//             }
+//         }
 
-        const init = () => {
-            particles = [];
-            const particleCount = (window.innerWidth * window.innerHeight) / 10000;
-            for (let i = 0; i < particleCount; i++) {
-                let x = Math.random() * canvas.width;
-                let y = Math.random() * canvas.height;
-                particles.push(new Particle(x, y));
-            }
-        };
+//         const init = () => {
+//             particles = [];
+//             const particleCount = (window.innerWidth * window.innerHeight) / 10000;
+//             for (let i = 0; i < particleCount; i++) {
+//                 let x = Math.random() * canvas.width;
+//                 let y = Math.random() * canvas.height;
+//                 particles.push(new Particle(x, y));
+//             }
+//         };
 
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
+//         const animate = () => {
+//             ctx.clearRect(0, 0, canvas.width, canvas.height);
+//             for (let i = 0; i < particles.length; i++) {
+//                 particles[i].update();
+//                 particles[i].draw();
+//             }
 
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a; b < particles.length; b++) {
-                    let dx = particles[a].x - particles[b].x;
-                    let dy = particles[a].y - particles[b].y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
+//             for (let a = 0; a < particles.length; a++) {
+//                 for (let b = a; b < particles.length; b++) {
+//                     let dx = particles[a].x - particles[b].x;
+//                     let dy = particles[a].y - particles[b].y;
+//                     let distance = Math.sqrt(dx * dx + dy * dy);
 
-                    if (distance < 100) {
-                        ctx.strokeStyle = `rgba(59, 130, 246, ${1 - (distance / 100) * 0.3})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[a].x, particles[a].y);
-                        ctx.lineTo(particles[b].x, particles[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
+//                     if (distance < 100) {
+//                         ctx.strokeStyle = `rgba(59, 130, 246, ${1 - (distance / 100) * 0.3})`;
+//                         ctx.lineWidth = 0.5;
+//                         ctx.beginPath();
+//                         ctx.moveTo(particles[a].x, particles[a].y);
+//                         ctx.lineTo(particles[b].x, particles[b].y);
+//                         ctx.stroke();
+//                     }
+//                 }
+//             }
 
-            animationFrameId = requestAnimationFrame(animate);
-        };
+//             animationFrameId = requestAnimationFrame(animate);
+//         };
 
-        const handleResize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            init();
-        };
+//         const handleResize = () => {
+//             canvas.width = window.innerWidth;
+//             canvas.height = window.innerHeight;
+//             init();
+//         };
 
-        window.addEventListener("resize", handleResize);
-        window.addEventListener("mousemove", (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
-        });
+//         window.addEventListener("resize", handleResize);
+//         window.addEventListener("mousemove", (e) => {
+//             mouse.x = e.x;
+//             mouse.y = e.y;
+//         });
 
-        handleResize();
-        animate();
+//         handleResize();
+//         animate();
 
-        return () => {
-            window.removeEventListener("resize", handleResize);
-            cancelAnimationFrame(animationFrameId);
-        };
-    }, []);
+//         return () => {
+//             window.removeEventListener("resize", handleResize);
+//             cancelAnimationFrame(animationFrameId);
+//         };
+//     }, []);
 
-    return (
-        <canvas
-            ref={canvasRef}
-            className="absolute inset-0 pointer-events-none z-0 opacity-30"
-        />
-    );
-};
+//     return (
+//         <canvas
+//             ref={canvasRef}
+//             className="absolute inset-0 pointer-events-none z-0 opacity-30"
+//         />
+//     );
+// };
 
 // --- Dashboard Components ---
 
@@ -157,81 +161,60 @@ const SidebarItem = ({ icon, label, id, active, onClick }: any) => (
     </button>
 );
 
-const StatCard = ({ title, value, unit, icon, color, trend }: any) => (
-    <div className="backdrop-blur-xl bg-white/5 border border-white/10 p-5 rounded-3xl group hover:border-white/20 transition-all duration-500">
-        <div className="flex justify-between items-start mb-4">
-            <div className={`p-3 rounded-2xl bg-${color}-500/10 text-${color}-400 group-hover:scale-110 transition-transform`}>
-                {icon}
-            </div>
-            {trend && (
-                <span className={`text-[10px] px-2 py-1 rounded-full ${trend.startsWith('+') ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
-                    {trend}
-                </span>
-            )}
-        </div>
-        <div className="space-y-1">
-            <p className="text-slate-400 text-xs font-medium uppercase tracking-wider">{title}</p>
-            <div className="flex items-baseline gap-1">
-                <h3 className="text-2xl font-bold text-white tracking-tight">{value}</h3>
-                <span className="text-slate-500 text-sm">{unit}</span>
-            </div>
-        </div>
-    </div>
-);
 
-const MessageBubble = ({ role, content, time }: any) => (
-    <div className={`flex flex-col ${role === 'user' ? 'items-end' : 'items-start'} mb-3 group animate-in slide-in-from-bottom-2 duration-300`}>
-        <div className={`flex items-start gap-3 max-w-[95%] md:max-w-[75%] ${role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-            <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 border shadow-sm ${role === 'user'
-                ? "bg-blue-600/20 border-blue-500/30 text-blue-400"
-                : "bg-teal-500/20 border-teal-500/30 text-teal-400"
-                }`}>
-                {role === 'user' ? <User size={12} /> : <Activity size={12} />}
-            </div>
 
-            <div className={`leading-relaxed ${role === 'user'
-                ? "py-2 px-4 bg-blue-600 text-white rounded-2xl rounded-tr-none shadow-md shadow-blue-500/10 text-base"
-                : "py-1 text-slate-100 text-base"
-                }`}>
-                <div className={`prose prose-invert prose-base max-w-none ${role === 'user' ? '[&_p]:text-white' : '[&_p]:text-slate-200'}`}>
-                    <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                            p: ({ children }) => <p className="mb-2 last:mb-0 leading-relaxed text-base">{children}</p>,
-                            ul: ({ children }) => <ul className="list-disc ml-5 space-y-1.5 my-2 text-base">{children}</ul>,
-                            ol: ({ children }) => <ol className="list-decimal ml-5 space-y-1.5 my-2 text-base">{children}</ol>,
-                            li: ({ children }) => <li className="pl-1 text-base">{children}</li>,
-                            code: (props: any) => {
-                                const { children, className, node, ...rest } = props;
-                                const match = /language-(\w+)/.exec(className || '');
-                                return match ? (
-                                    <pre className="bg-black/40 p-2.5 rounded-lg overflow-x-auto my-1.5 border border-white/5">
-                                        <code className={`${className} text-xs`} {...rest}>{children}</code>
-                                    </pre>
-                                ) : (
-                                    <code className="bg-white/10 px-1 py-0.5 rounded text-teal-300 font-mono text-xs" {...rest}>{children}</code>
-                                )
-                            },
-                            table: ({ children }) => (
-                                <div className="overflow-x-auto my-3 rounded-lg border border-white/10">
-                                    <table className="w-full text-left border-collapse text-xs">{children}</table>
-                                </div>
-                            ),
-                            th: ({ children }) => <th className="bg-white/5 p-1.5 text-[10px] font-bold border-b border-white/10 uppercase tracking-wider">{children}</th>,
-                            td: ({ children }) => <td className="p-1.5 border-b border-white/5 text-slate-400">{children}</td>,
-                            strong: ({ children }) => <strong className="font-bold text-white">{children}</strong>,
-                        }}
-                    >
-                        {content}
-                    </ReactMarkdown>
-                </div>
-            </div>
-        </div>
-        <span className={`text-[10px] text-slate-500 mt-1 px-10 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}>
-            {time}
-        </span>
-    </div>
-);
+//     <div className={`flex flex-col ${role === 'user' ? 'items-end' : 'items-start'} mb-3 group animate-in slide-in-from-bottom-2 duration-300`}>
+//         <div className={`flex items-start gap-3 max-w-[95%] md:max-w-[75%] ${role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+//             <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 border shadow-sm ${role === 'user'
+//                 ? "bg-blue-600/20 border-blue-500/30 text-blue-400"
+//                 : "bg-teal-500/20 border-teal-500/30 text-teal-400"
+//                 }`}>
+//                 {role === 'user' ? <User size={12} /> : <Activity size={12} />}
+//             </div>
+
+//             <div className={`leading-relaxed ${role === 'user'
+//                 ? "py-2 px-4 bg-blue-600 text-white rounded-2xl rounded-tr-none shadow-md shadow-blue-500/10 text-base"
+//                 : "py-1 text-slate-100 text-base"
+//                 }`}>
+//                 <div className={`prose prose-invert prose-base max-w-none ${role === 'user' ? '[&_p]:text-white' : '[&_p]:text-slate-200'}`}>
+//                     <ReactMarkdown
+//                         remarkPlugins={[remarkGfm]}
+//                         components={{
+//                             p: ({ children }) => <p className="mb-2 last:mb-0 leading-relaxed text-base">{children}</p>,
+//                             ul: ({ children }) => <ul className="list-disc ml-5 space-y-1.5 my-2 text-base">{children}</ul>,
+//                             ol: ({ children }) => <ol className="list-decimal ml-5 space-y-1.5 my-2 text-base">{children}</ol>,
+//                             li: ({ children }) => <li className="pl-1 text-base">{children}</li>,
+//                             code: (props: any) => {
+//                                 const { children, className, node, ...rest } = props;
+//                                 const match = /language-(\w+)/.exec(className || '');
+//                                 return match ? (
+//                                     <pre className="bg-black/40 p-2.5 rounded-lg overflow-x-auto my-1.5 border border-white/5">
+//                                         <code className={`${className} text-xs`} {...rest}>{children}</code>
+//                                     </pre>
+//                                 ) : (
+//                                     <code className="bg-white/10 px-1 py-0.5 rounded text-teal-300 font-mono text-xs" {...rest}>{children}</code>
+//                                 )
+//                             },
+//                             table: ({ children }) => (
+//                                 <div className="overflow-x-auto my-3 rounded-lg border border-white/10">
+//                                     <table className="w-full text-left border-collapse text-xs">{children}</table>
+//                                 </div>
+//                             ),
+//                             th: ({ children }) => <th className="bg-white/5 p-1.5 text-[10px] font-bold border-b border-white/10 uppercase tracking-wider">{children}</th>,
+//                             td: ({ children }) => <td className="p-1.5 border-b border-white/5 text-slate-400">{children}</td>,
+//                             strong: ({ children }) => <strong className="font-bold text-white">{children}</strong>,
+//                         }}
+//                     >
+//                         {content}
+//                     </ReactMarkdown>
+//                 </div>
+//             </div>
+//         </div>
+//         <span className={`text-[10px] text-slate-500 mt-1 px-10 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}>
+//             {time}
+//         </span>
+//     </div>
+// );
 
 // --- Main Page Component ---
 
@@ -252,23 +235,15 @@ export default function MainPage() {
     });
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [message, setMessage] = useState("");
-    const [chatHistory, setChatHistory] = useState([
-        { role: 'assistant', content: 'Hi, I am your MediSeg AI assistant. How can I help you today?', time: '10:30 AM' }
-    ]);
-    const [isLoading, setIsLoading] = useState(false);
+  
+
     const [latestVitals, setLatestVitals] = useState<any>(null);
     const router = useRouter();
-    const chatEndRef = useRef<HTMLDivElement>(null);
 
-    const scrollToBottom = () => {
-        chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
 
-    useEffect(() => {
-        scrollToBottom();
-    }, [chatHistory, isLoading]);
+  
 
+   
     useEffect(() => {
         fetch("/api/me")
             .then(res => {
@@ -278,106 +253,9 @@ export default function MainPage() {
             .then(data => { setName(data.user.name); setEmail(data.user.email) })
             .catch(() => router.push("/login"));
     }, [router]);
-    const handleSendMessage = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!message.trim() || isLoading) return;
+   
 
-        const userMessage = {
-            role: 'user',
-            content: message,
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        };
 
-        setChatHistory(prev => [...prev, userMessage]);
-        const currentMessage = message;
-        setMessage("");
-        setIsLoading(true);
-
-        try {
-            const response = await fetch("/api/chat", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: currentMessage }),
-            });
-
-            if (!response.ok) throw new Error("API call failed");
-
-            const aiText = await response.json();
-
-            setChatHistory(prev => [...prev, {
-                role: 'assistant',
-                content: typeof aiText === 'string' ? aiText : (aiText.message || "I encountered an error."),
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            }]);
-        } catch (error) {
-            console.error("Chat error:", error);
-            setChatHistory(prev => [...prev, {
-                role: 'assistant',
-                content: "Sorry, I'm having trouble connecting to the medical clinical system right now. Please try again later.",
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            }]);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handleTagClick = async (tagLabel: string) => {
-        if (tagLabel === "Analyze Lab Results") {
-            setIsLoading(true);
-            try {
-                // Fetch latest records
-                const res = await fetch("/api/medical-records");
-                const data = await res.json();
-                const records = data.records || [];
-
-                let prompt = "Please analyze my clinical lab results. ";
-                if (records.length > 0) {
-                    prompt += "\n\nHere is my recent clinical history:\n";
-                    records.forEach((rec: any, i: number) => {
-                        prompt += `\nRecord ${i + 1} (${new Date(rec.createdAt).toLocaleDateString()}):`;
-                        prompt += `\n- Type: ${rec.type}`;
-                        if (rec.dailyActivity) prompt += `\n- Daily Activity: ${rec.dailyActivity} %`;
-                        if (rec.sleepEfficiency) prompt += `\n- Sleep Efficiency: ${rec.sleepEfficiency} %`;
-                        if (rec.spo2) prompt += `\n- SpO2: ${rec.spo2} %`;
-                        if (rec.systolic) prompt += `\n- BP: ${rec.systolic}/${rec.diastolic} mmHg`;
-                        if (rec.heartRate) prompt += `\n- HR: ${rec.heartRate} bpm`;
-                        if (rec.analysis) prompt += `\n- Prior Analysis: ${rec.analysis}`;
-                    });
-                    prompt += "\n\nPlease provide a comprehensive assessment based on these data points.";
-                } else {
-                    prompt += "\n(No clinical history found in my records. Please provide general guidance on what lab values usually mean.)";
-                }
-
-                const userMessage = {
-                    role: 'user',
-                    content: prompt,
-                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                };
-                setChatHistory(prev => [...prev, userMessage]);
-
-                const response = await fetch("/api/chat", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: prompt }),
-                });
-
-                if (!response.ok) throw new Error("API call failed");
-                const aiResponse = await response.json();
-
-                setChatHistory(prev => [...prev, {
-                    role: 'assistant',
-                    content: typeof aiResponse === 'string' ? aiResponse : (aiResponse.message || "Analysis complete."),
-                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                }]);
-            } catch (error) {
-                console.error("Tag action error:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        } else {
-            setMessage(tagLabel);
-        }
-    };
 
     const fetchRecords = async () => {
         try {
@@ -546,229 +424,11 @@ export default function MainPage() {
                 <div className="max-w-6xl mx-auto">
 
                     {activeTab === "overview" && (
-                        <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                            <header className="flex justify-between items-end">
-                                <div>
-                                    <h2 className="text-3xl font-bold text-white tracking-tight">Clinical Dashboard</h2>
-                                    <p className="text-slate-400 mt-1">Systems are nominal. 12 data points analyzed today.</p>
-                                </div>
-                                <div className="text-right">
-                                    <p className="text-sm text-slate-500 font-medium">{new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</p>
-                                </div>
-                            </header>
-
-                            {/* Stats Grid */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                <StatCard
-                                    title="Heart Rate"
-                                    value={latestVitals?.heartRate || "No Data"}
-                                    unit={latestVitals?.heartRate ? "bpm" : ""}
-                                    color="rose"
-                                    trend={latestVitals?.heartRate ? "+2.4%" : null}
-                                    icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>}
-                                />
-                                <StatCard
-                                    title="Sleep Efficiency"
-                                    value={latestVitals?.sleepEfficiency || "No Data"}
-                                    unit={latestVitals?.sleepEfficiency ? "%" : ""}
-                                    color="blue"
-                                    trend={latestVitals?.sleepEfficiency ? "+1.2%" : null}
-                                    icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>}
-                                />
-                                <StatCard
-                                    title="Spo2 Levels"
-                                    value={latestVitals?.spo2 || "No Data"}
-                                    unit={latestVitals?.spo2 ? "%" : ""}
-                                    color="teal"
-                                    trend={latestVitals?.spo2 ? "+0.5%" : null}
-                                    icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 16V8M8 12h8" /></svg>}
-                                />
-                                <StatCard
-                                    title="Daily Activity"
-                                    value={latestVitals?.dailyActivity ? parseInt(latestVitals.dailyActivity).toLocaleString() : "No Data"}
-                                    unit={latestVitals?.dailyActivity ? "steps" : ""}
-                                    color="amber"
-                                    trend={latestVitals?.dailyActivity ? "-4.1%" : null}
-                                    icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>}
-                                />
-                            </div>
-
-                            {/* Main Analytics Section */}
-                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                                <div className="lg:col-span-2 backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-8 relative overflow-hidden group">
-                                    <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-[80px] rounded-full -mr-20 -mt-20 group-hover:bg-blue-500/20 transition-colors duration-700" />
-                                    <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse" />
-                                        AI Diagnostic Analysis Results
-                                    </h3>
-
-                                    <div className="space-y-6 relative z-10">
-                                        {(!latestVitals ? [
-                                            { area: "Systolic BP", score: 0, status: "No Data", color: "text-blue-400" },
-                                            { area: "Diastolic BP", score: 0, status: "No Data", color: "text-teal-400" },
-                                            { area: "Heart Rate", score: 0, status: "No Data", color: "text-amber-400" },
-                                        ] : [
-                                            {
-                                                area: "Systolic BP",
-                                                score: Math.min(100, (Number(latestVitals.systolic) / 180) * 100),
-                                                status: `${latestVitals.systolic} mmHg`,
-                                                color: "text-blue-400"
-                                            },
-                                            {
-                                                area: "Diastolic BP",
-                                                score: Math.min(100, (Number(latestVitals.diastolic) / 120) * 100),
-                                                status: `${latestVitals.diastolic} mmHg`,
-                                                color: "text-teal-400"
-                                            },
-                                            {
-                                                area: "Heart Rate",
-                                                score: Math.min(100, (Number(latestVitals.heartRate) / 150) * 100),
-                                                status: `${latestVitals.heartRate} bpm`,
-                                                color: "text-amber-400"
-                                            },
-                                        ]).map((item, i) => (
-                                            <div key={i} className="group/item">
-                                                <div className="flex justify-between items-center mb-2">
-                                                    <span className="text-slate-300 font-medium">{item.area}</span>
-                                                    <span className={`text-sm font-bold ${item.color}`}>{item.status}</span>
-                                                </div>
-                                                <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                                                    <div
-                                                        className={`h-full bg-gradient-to-r from-blue-600 to-teal-400 transition-all duration-1000 ease-out`}
-                                                        style={{ width: `${item.score}%` }}
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    <div className="mt-10 p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-4">
-                                        <div className="p-3 rounded-xl bg-blue-500/10 text-blue-400">
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-semibold text-white">AI Recommendation</p>
-                                            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                                                {latestVitals
-                                                    ? "System suggests increasing hydration levels and scheduling a supplementary HRV scan by Friday."
-                                                    : "Please log your clinical vitals to receive personalized AI health recommendations."
-                                                }
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-8">
-                                    <h3 className="text-xl font-bold text-white mb-6">Patient Pipeline</h3>
-                                    <div className="space-y-4">
-                                        {[
-                                            { name: "John Doe", type: "Radiology", time: "09:00" },
-                                            { name: "Sarah Smith", type: "Pathology", time: "11:30" },
-                                            { name: "Mark Wilson", type: "General", time: "14:15" },
-                                            { name: "Ellen White", type: "Genetics", time: "16:00" },
-                                        ].map((p, i) => (
-                                            <div key={i} className="flex items-center justify-between p-3 rounded-2xl hover:bg-white/5 transition-colors cursor-pointer group">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)] group-hover:scale-125 transition-transform" />
-                                                    <div>
-                                                        <p className="text-sm font-bold text-white leading-none">{p.name}</p>
-                                                        <p className="text-[10px] text-slate-500 mt-1">{p.type}</p>
-                                                    </div>
-                                                </div>
-                                                <span className="text-[10px] font-medium text-slate-600 group-hover:text-blue-400 transition-colors uppercase">{p.time}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <button className="w-full mt-6 py-3 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 text-slate-400 hover:text-white transition-all text-xs font-bold uppercase tracking-widest">
-                                        View All Rounds
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                      <Overview latestVitals={latestVitals}/>
                     )}
 
                     {activeTab === "chat" && (
-                        <div className="h-[calc(100vh-140px)] flex flex-col animate-in fade-in zoom-in-[0.98] duration-700">
-                            <div className="mb-8 flex justify-between items-end">
-                                <div>
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <div className="w-2 h-2 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.5)] animate-pulse" />
-                                        <span className="text-[10px] font-bold text-teal-400 uppercase tracking-widest">System Active</span>
-                                    </div>
-                                    <h2 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
-                                        AI Clinical Assistant
-                                        <div className="px-2 py-0.5 rounded text-[10px] bg-blue-600/20 text-blue-400 border border-blue-500/20 uppercase tracking-tighter">v3.5-flash</div>
-                                    </h2>
-                                    <p className="text-slate-400 mt-1">Real-time medical reasoning and database retrieval.</p>
-                                </div>
-                            </div>
-
-                            <div className="flex-1 overflow-y-auto mb-6 pr-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-                                <div className="space-y-2">
-                                    {chatHistory.map((chat, i) => (
-                                        <MessageBubble key={i} {...chat} />
-                                    ))}
-                                    {isLoading && (
-                                        <div className="flex items-start gap-3 mb-6 animate-pulse">
-                                            <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 border bg-teal-500/20 border-teal-500/30 text-teal-400">
-                                                <Activity size={14} className="animate-pulse" />
-                                            </div>
-                                            <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 text-slate-400 rounded-tl-none backdrop-blur-md flex items-center gap-2">
-                                                <Loader2 size={16} className="animate-spin" />
-                                                <span className="text-xs font-medium italic">MediSeg AI is analyzing...</span>
-                                            </div>
-                                        </div>
-                                    )}
-                                    <div ref={chatEndRef} />
-                                </div>
-                            </div>
-
-                            <div className="relative">
-                                <form onSubmit={handleSendMessage} className="relative z-10">
-                                    <div className="backdrop-blur-xl bg-white/[0.03] border border-white/10 p-1 rounded-[32px] focus-within:border-blue-500/50 focus-within:bg-white/[0.05] transition-all shadow-2xl group/input">
-                                        <div className="flex items-center gap-2">
-                                            <div className="pl-3 text-slate-500">
-                                                <Sparkles size={16} />
-                                            </div>
-                                            <input
-                                                type="text"
-                                                value={message}
-                                                onChange={(e) => setMessage(e.target.value)}
-                                                disabled={isLoading}
-                                                placeholder="Ask anything..."
-                                                className="flex-1 bg-transparent border-none outline-none py-2.5 text-base text-white placeholder:text-slate-600 disabled:opacity-50"
-                                            />
-                                            <button
-                                                type="submit"
-                                                disabled={isLoading || !message.trim()}
-                                                className="mr-0.5 p-2.5 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 disabled:from-slate-800 disabled:to-slate-900 text-white rounded-full transition-all shadow-lg hover:shadow-blue-500/20 active:scale-95 disabled:cursor-not-allowed group-hover/input:scale-105"
-                                            >
-                                                <Send size={16} fill="currentColor" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap justify-center gap-2 mt-4">
-                                        {[
-                                            { label: "Patient Summary", icon: <User size={10} /> },
-                                            { label: "Analyze Lab Results", icon: <Brain size={10} /> },
-                                            { label: "Search Literature", icon: <Sparkles size={10} /> }
-                                        ].map((tag) => (
-                                            <button
-                                                key={tag.label}
-                                                onClick={() => handleTagClick(tag.label)}
-                                                disabled={isLoading}
-                                                type="button"
-                                                className="text-[12px] uppercase tracking-wider font-bold text-slate-500 hover:text-blue-400 border border-white/5 hover:border-blue-500/20 px-4 py-2 rounded-2xl transition-all bg-white/[0.02] hover:bg-white/[0.05] flex items-center gap-2"
-                                            >
-                                                {tag.icon}
-                                                {tag.label}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </form>
-                                <div className="absolute -inset-4 bg-blue-500/5 blur-3xl rounded-full pointer-events-none -z-10" />
-                            </div>
-                        </div>
+                <AIasistant  />
                     )}
 
                     {activeTab === "records" && (
@@ -796,7 +456,7 @@ export default function MainPage() {
                                                 <option className="bg-[#050B14]">Blood Pressure</option>
                                                 <option className="bg-[#050B14]">Heart Rate Scan</option>
                                                 <option className="bg-[#050B14]">Lab Results Analysis</option>
-                                                <option className="bg-[#050B14]">General Vitals</option>
+                                                <option className="bg-[#050B14]1">General Vitals</option>
                                             </select>
                                         </div>
                                         <div className="grid grid-cols-2 gap-4">

@@ -2,12 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { GoogleGenAI } from "@google/genai";
+import { ChatGoogle } from "@langchain/google";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { BytesOutputParser } from "@langchain/core/output_parsers";
 type SessionUser = {
   id: string;
   email: string;
   name?: string;
 };
-
+export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   try {
     // 🔐 Get session
@@ -31,7 +34,54 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-const ai = new GoogleGenAI({});
+
+
+
+
+
+//sending the data and retreiving response
+
+
+
+
+// const llm = new ChatGoogleGenerativeAI({
+//      model: "gemini-3-flash-preview",
+//       apiKey: process.env.GEMINI_API_KEY,
+//       streaming: true,
+//     });
+
+//     const parser = new BytesOutputParser();
+//     console.log("sened")
+//     const stream = await llm.pipe(parser).stream(message);
+
+//     return new Response(stream, {
+//       headers: { "Content-Type": "text/plain; charset=utf-8" },
+//     });
+const llm = new ChatGoogleGenerativeAI({
+      model: "gemini-2.5-flash",
+      apiKey: process.env.GEMINI_API_KEY,
+      temperature: 0.7,
+      maxRetries: 2,
+    });
+
+    // 1. Use BytesOutputParser to automatically convert to byte stream
+    const stream = await llm.pipe(new BytesOutputParser()).stream(message);
+
+    // 2. Return the stream directly as a Response
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-cache, no-transform",
+        "X-Accel-Buffering": "no",
+      },
+    });
+
+
+
+
+
+
+//const ai = new GoogleGenAI({});
 
     // 🤖 Call Gemini
     // const geminiRes = await fetch(
@@ -48,19 +98,19 @@ const ai = new GoogleGenAI({});
     //     }),
     //   }
     // );
-  const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
-    contents: message,
-  });
- // console.log(response.text);
+//   const response = await ai.models.generateContent({
+//     model: "gemini-3-flash-preview",
+//     contents: message,
+//   });
+//  // console.log(response.text);
 
-    if (!response) {
+//     if (!response) {
      
-      return NextResponse.json(
-        { message: "AI service error" },
-        { status: 500 }
-      );
-    }
+//       return NextResponse.json(
+//         { message: "AI service error" },
+//         { status: 500 }
+//       );
+//     }
 
 //     const data = await geminiRes.json();
 
@@ -68,7 +118,7 @@ const ai = new GoogleGenAI({});
 //       data?.candidates?.[0]?.content?.parts?.[0]?.text ??
 //       "Sorry, I couldn't generate a response.";
 
-     return NextResponse.json( response.text );
+   //  return NextResponse.json( response.text );
 } catch (err) {
     console.error("Chat API error:", err);
     return NextResponse.json(
