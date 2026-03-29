@@ -43,7 +43,7 @@ MONGODB_URI=your_mongodb_connection_string
 
 # Security
 # Note: Password must be at least 32 characters long
-SESSION_PASSWORD=your_secure_32_character_password_Open http://localhost:3000 with your browser to see the result.here
+SESSION_PASSWORD=your_secure_32_character_password
 
 # Environment
 NODE_ENV=development
