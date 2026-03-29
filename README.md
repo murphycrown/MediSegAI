@@ -36,19 +36,19 @@ Clone the repository and install the necessary dependencies:
 npm install
 ```
 # AI Configuration
-GEMINI_API_KEY=your_gemini_api_key_here
+**GEMINI_API_KEY** =your_gemini_api_key_here
 
 # Database Configuration
-MONGODB_URI=your_mongodb_connection_string
+**MONGODB_URI** =your_mongodb_connection_string
 
 # Security
 # Note: Password must be at least 32 characters long
-SESSION_PASSWORD=your_secure_32_character_password
+**SESSION_PASSWORD** =your_secure_32_character_password
 
 # Environment
-NODE_ENV=development
+**NODE_ENV**=development
 
-#Running the project
+# Running the project
 ```bash
 npm run dev
 ```
